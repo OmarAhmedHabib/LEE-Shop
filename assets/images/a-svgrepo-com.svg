@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="800px" height="800px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <!-- خلفية متدرجة بالألوان -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF0000" />
+      <stop offset="25%" stop-color="#FF9900" />
+      <stop offset="50%" stop-color="#33CC33" />
+      <stop offset="75%" stop-color="#3399FF" />
+      <stop offset="100%" stop-color="#CC66FF" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="15" height="15" fill="url(#bgGradient)"/>
+  
+  <!-- الحرف E باللون الأسود -->
+  <text x="3" y="12" font-size="14" fill="black" font-family="Arial, sans-serif" font-weight="bold">LE</text>
+  
+  <!-- الشرطة بألوان متعددة -->
+  <defs>
+    <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF0066" />
+      <stop offset="25%" stop-color="#FF6600" />
+      <stop offset="50%" stop-color="#FFCC00" />
+      <stop offset="75%" stop-color="#00CC66" />
+      <stop offset="100%" stop-color="#0066FF" />
+    </linearGradient>
+  </defs>
+  
+  <rect x="4" y="1.8" width="6" height="1.6" fill="url(#lineGradient)" rx="1.2"/>
+  
+  <!-- تأثيرات إضافية من النقاط الملونة -->
+  <circle cx="2" cy="3" r="0.5" fill="#FF00FF"/>
+  <circle cx="14" cy="4" r="0.7" fill="#00FFFF"/>
+  <circle cx="8" cy="14" r="0.6" fill="#FFFF00"/>
+  <circle cx="12" cy="12" r="0.4" fill="#FF0000"/>
+</svg>
