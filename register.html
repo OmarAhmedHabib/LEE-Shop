@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Registration Form</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .card-3d {
+            width: 400px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+            padding: 30px;
+            animation-duration: 1s;
+        }
+        
+        .card-3d:hover {
+            transform: rotateY(5deg) rotateX(5deg) translateZ(20px);
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 25px;
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.5);
+            transform: translateZ(30px);
+            animation-duration: 1s;
+        }
+        
+        .logo i {
+            font-size: 28px;
+            color: white;
+        }
+        
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 15px;
+            color: white;
+            margin-bottom: 15px;
+            backdrop-filter: blur(5px);
+            transform: translateZ(20px);
+            transition: all 0.3s ease, transform 0.5s ease;
+        }
+        
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+            transform: translateZ(25px);
+        }
+        
+        .btn-register {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            width: 100%;
+            margin-top: 10px;
+            transform: translateZ(25px);
+            box-shadow: 0 10px 20px rgba(0, 242, 254, 0.3);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn-register::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.7s ease;
+            z-index: -1;
+        }
+        
+        .btn-register:hover::before {
+            left: 100%;
+        }
+        
+        .btn-register:hover {
+            transform: translateZ(25px) translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 242, 254, 0.6);
+        }
+        
+        .link-login {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            transform: translateZ(15px);
+            transition: all 0.3s;
+        }
+        
+        .link-login:hover {
+            color: white;
+            transform: translateZ(15px) scale(1.05);
+        }
+        
+        .floating-bubbles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg) translateZ(0);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-500px) rotate(180deg) translateZ(100px);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(360deg) translateZ(0);
+                opacity: 0;
+            }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .card-3d {
+                width: 90%;
+                padding: 20px 15px;
+            }
+            
+            .logo {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-bubbles">
+        <!-- Bubbles will be added dynamically by JS -->
+    </div>
+    
+    <div class="card-3d wow animate__animated animate__zoomIn">
+        <div class="logo wow animate__animated animate__bounceIn">
+            <i class="fas fa-user-plus"></i>
+        </div>
+        <h2 class="text-center text-white mb-4 wow animate__animated animate__fadeInDown" style="transform: translateZ(25px);">Create Account</h2>
+        
+        <form id="registrationForm" class="needs-validation" novalidate>
+            <div class="row">
+                <div class="col-md-6 mb-3 wow animate__animated animate__fadeInLeft" data-wow-delay="0.1s">
+                    <input type="text" class="form-control" id="firstName" placeholder="First Name" required
+                           pattern="[A-Za-z]{2,}" minlength="2" maxlength="50">
+                    <div class="invalid-feedback">
+                        Please enter a valid first name (2-50 letters, no numbers/special chars)
+                    </div>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3 wow animate__animated animate__fadeInRight" data-wow-delay="0.1s">
+                    <input type="text" class="form-control" id="lastName" placeholder="Last Name" required
+                           pattern="[A-Za-z]{2,}" minlength="2" maxlength="50">
+                    <div class="invalid-feedback">
+                        Please enter a valid last name (2-50 letters, no numbers/special chars)
+                    </div>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3 wow animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                <input type="email" class="form-control" id="email" placeholder="Email Address" required>
+                <div class="invalid-feedback">
+                    Please provide a valid email address
+                </div>
+                <div class="valid-feedback">
+                    Email looks good!
+                </div>
+            </div>
+            
+            <div class="mb-3 position-relative wow animate__animated animate__fadeInUp" data-wow-delay="0.3s">
+                <input type="password" class="form-control" id="password" placeholder="Password" required
+                       minlength="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
+                <div class="invalid-feedback">
+                    Password must contain:
+                    <ul class="mt-1">
+                        <li>At least 8 characters</li>
+                        <li>1 uppercase letter</li>
+                        <li>1 lowercase letter</li>
+                        <li>1 number</li>
+                        <li>1 special character</li>
+                    </ul>
+                </div>
+                <div class="valid-feedback">
+                    Strong password!
+                </div>
+                <div class="password-toggle" style="position: absolute; right: 10px; top: 10px; cursor: pointer;">
+                    <i class="fas fa-eye"></i>
+                </div>
+            </div>
+            
+            <div class="mb-3 position-relative wow animate__animated animate__fadeInUp" data-wow-delay="0.4s">
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" required>
+                <div class="invalid-feedback">
+                    Passwords do not match
+                </div>
+                <div class="valid-feedback">
+                    Passwords match!
+                </div>
+                <div class="password-toggle" style="position: absolute; right: 10px; top: 10px; cursor: pointer;">
+                    <i class="fas fa-eye"></i>
+                </div>
+            </div>
+            
+            <div class="mb-3 form-check wow animate__animated animate__fadeIn" data-wow-delay="0.5s">
+                <input type="checkbox" class="form-check-input" id="terms" required>
+                <label class="form-check-label text-white" for="terms">
+                    I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal" class="animate__animated animate__fadeIn">terms & conditions</a>
+                </label>
+                <div class="invalid-feedback">
+                    You must agree to the terms and conditions
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-register w-100 wow animate__animated animate__fadeInUp" data-wow-delay="0.6s">
+                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                REGISTER
+            </button>
+            
+            <div class="mt-3 text-center wow animate__animated animate__fadeIn" data-wow-delay="0.7s">
+                <a href="index.html" class="link-login">Already have an account? Login</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Terms Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content wow animate__animated animate__zoomIn">
+                <div class="modal-header">
+                    <h5 class="modal-title">Terms & Conditions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>1. Acceptance of Terms</h6>
+                    <p>By registering an account, you agree to be bound by these Terms and Conditions.</p>
+                    
+                    <h6>2. User Responsibilities</h6>
+                    <p>You are responsible for maintaining the confidentiality of your account and password.</p>
+                    
+                    <h6>3. Privacy Policy</h6>
+                    <p>Your personal information will be handled in accordance with our Privacy Policy.</p>
+                    
+                    <h6>4. Account Security</h6>
+                    <p>You must notify us immediately of any unauthorized use of your account.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Wow.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+    
+    <script>
+        // Initialize wow.js
+        new WOW().init();
+        
+        // Create floating bubbles
+        const bubblesContainer = document.querySelector('.floating-bubbles');
+        for (let i = 0; i < 25; i++) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            
+            // Random size between 10px and 100px
+            const size = Math.random() * 90 + 10;
+            bubble.style.width = `${size}px`;
+            bubble.style.height = `${size}px`;
+            
+            // Random position
+            bubble.style.left = `${Math.random() * 100}%`;
+            bubble.style.bottom = `${Math.random() * 20 - 30}px`;
+            
+            // Random animation duration
+            bubble.style.animationDuration = `${Math.random() * 20 + 10}s`;
+            bubble.style.animationDelay = `${Math.random() * 5}s`;
+            
+            bubblesContainer.appendChild(bubble);
+        }
+        
+        // Enhanced form validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registrationForm');
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirmPassword');
+            
+            // Password toggle functionality
+            document.querySelectorAll('.password-toggle').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const input = this.parentElement.querySelector('input');
+                    const icon = this.querySelector('i');
+                    
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.classList.replace('fa-eye', 'fa-eye-slash');
+                    } else {
+                        input.type = 'password';
+                        icon.classList.replace('fa-eye-slash', 'fa-eye');
+                    }
+                });
+            });
+            
+            // Custom password validation
+            confirmPassword.addEventListener('input', function() {
+                if (password.value !== confirmPassword.value) {
+                    confirmPassword.setCustomValidity("Passwords do not match");
+                    confirmPassword.classList.add('is-invalid');
+                    confirmPassword.classList.remove('is-valid');
+                } else {
+                    confirmPassword.setCustomValidity("");
+                    confirmPassword.classList.remove('is-invalid');
+                    confirmPassword.classList.add('is-valid');
+                }
+            });
+            
+            // Form submission handler
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                
+                if (!form.checkValidity()) {
+                    form.classList.add('was-validated');
+                    return;
+                }
+                
+                // Show loading spinner
+                const submitBtn = form.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
+                submitBtn.querySelector('.spinner-border').classList.remove('d-none');
+                
+                // Add pulse animation to card
+                document.querySelector('.card-3d').classList.add('animate__animated', 'animate__pulse');
+                
+                // Simulate form submission (replace with actual AJAX call)
+                setTimeout(() => {
+                    // Show success animation
+                    document.querySelector('.card-3d').classList.remove('animate__pulse');
+                    document.querySelector('.card-3d').classList.add('animate__bounce');
+                    
+                    setTimeout(() => {
+                        alert('Registration successful!');
+                        form.reset();
+                        form.classList.remove('was-validated');
+                        submitBtn.disabled = false;
+                        submitBtn.querySelector('.spinner-border').classList.add('d-none');
+                        document.querySelector('.card-3d').classList.remove('animate__bounce');
+                        
+                        // Reset validation states
+                        form.querySelectorAll('.form-control').forEach(input => {
+                            input.classList.remove('is-valid');
+                        });
+                    }, 1000);
+                }, 1500);
+            });
+            
+            // Real-time validation feedback
+            form.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', function() {
+                    if (this.checkValidity()) {
+                        this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
+                    } else {
+                        this.classList.remove('is-valid');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

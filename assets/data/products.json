@@ -1,0 +1,53 @@
+{
+  "products": [
+    {
+      "name": "Wireless Headphones",
+      "description": "Premium sound quality with noise cancellation",
+      "price": 112.99,
+      "discount": 20,
+      "image": "assets/images/products/headphones.jpg"
+    },
+    {
+      "name": "Smart Watch",
+      "description": "Track your fitness and stay connected",
+      "price": 149.99,
+      "discount": 0,
+      "image": "assets/images/products/smartwatch.jpg"
+    },
+    {
+      "name": "Bluetooth Speaker",
+      "description": "Portable speaker with 20hr battery life",
+      "price": 69.99,
+      "discount": 15,
+      "image": "assets/images/products/speaker.jpg"
+    },
+    {
+      "name": "Laptop Backpack",
+      "description": "Durable and stylish backpack for professionals",
+      "price": 49.99,
+      "discount": 0,
+      "image": "assets/images/products/backpack.jpg"
+    },
+    {
+      "name": "Wireless Charger",
+      "description": "Fast charging for all Qi-enabled devices",
+      "price": 34.99,
+      "discount": 10,
+      "image": "assets/images/products/charger.jpg"
+    }
+  ],
+  "categories": [
+    {
+      "name": "Electronics",
+      "image": "assets/images/categories/electronics.jpg"
+    },
+    {
+      "name": "Fashion",
+      "image": "assets/images/categories/fashion.jpg"
+    },
+    {
+      "name": "Home & Garden",
+      "image": "assets/images/categories/home.jpg"
+    }
+  ]
+}

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --dark-color: #343a40;
+            --light-color: #f8f9fa;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+    }
+        
+        body {
+            background-color: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .sidebar-menu li {
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu li:hover {
+            background-color: rgba(255,255,255,0.1);
+            padding-left: 25px;
+        }
+        
+        .sidebar-menu li.active {
+            background-color: rgba(255,255,255,0.2);
+            border-left: 3px solid white;
+        }
+        
+        .sidebar-menu a {
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .sidebar-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Dashboard Header */
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Stats Cards */
+        .stat-card {
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            height: 100%;
+        }
+        
+        .stat-card:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .stat-card i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        .stat-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card p {
+            opacity: 0.8;
+            margin-bottom: 0;
+        }
+        
+        .card-users {
+            background: linear-gradient(135deg, #4e73df, #224abe);
+        }
+        
+        .card-revenue {
+            background: linear-gradient(135deg, #1cc88a, #13855c);
+        }
+        
+        .card-orders {
+            background: linear-gradient(135deg, #f6c23e, #dda20a);
+        }
+        
+        .card-products {
+            background: linear-gradient(135deg, #e74a3b, #be2617);
+        }
+        
+        /* Recent Orders Table */
+        .recent-orders {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        /* Chart Container */
+        .chart-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            height: 400px;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 80px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header h3, 
+            .sidebar-menu span {
+                display: none;
+            }
+            
+            .sidebar-menu i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+            
+            .sidebar-menu li {
+                text-align: center;
+                padding: 15px 10px;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                left: -100%;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .menu-toggle {
+                display: block !important;
+            }
+        }
+        
+        /* Menu Toggle Button */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu Toggle Button (Mobile Only) -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar wow animate__animated animate__fadeInLeft" id="sidebar">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-user-shield"></i> Admin Panel</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="active">
+                <a href="#"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-users"></i> <span>Users</span></a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-box"></i> <span>Products</span></a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-shopping-cart"></i> <span>Orders</span></a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-chart-line"></i> <span>Analytics</span></a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-cog"></i> <span>Settings</span></a>
+            </li>
+            <li>
+                <a href="index.html"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content wow animate__animated animate__fadeInRight">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <h1><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h1>
+            <p>Welcome back, Administrator! Here's what's happening with your store today.</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row">
+            <div class="col-md-6 col-lg-3 wow animate__animated animate__fadeInUp" data-wow-delay="0.1s">
+                <div class="stat-card card-users">
+                    <i class="fas fa-users"></i>
+                    <h3>1,254</h3>
+                    <p>Total Users</p>
+                    <div class="progress mt-2" style="height: 5px;">
+                        <div class="progress-bar bg-white" style="width: 75%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 wow animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                <div class="stat-card card-revenue">
+                    <i class="fas fa-dollar-sign"></i>
+                    <h3>$12,345</h3>
+                    <p>Total Revenue</p>
+                    <div class="progress mt-2" style="height: 5px;">
+                        <div class="progress-bar bg-white" style="width: 65%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 wow animate__animated animate__fadeInUp" data-wow-delay="0.3s">
+                <div class="stat-card card-orders">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>324</h3>
+                    <p>New Orders</p>
+                    <div class="progress mt-2" style="height: 5px;">
+                        <div class="progress-bar bg-white" style="width: 45%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 wow animate__animated animate__fadeInUp" data-wow-delay="0.4s">
+                <div class="stat-card card-products">
+                    <i class="fas fa-box-open"></i>
+                    <h3>1,432</h3>
+                    <p>Products</p>
+                    <div class="progress mt-2" style="height: 5px;">
+                        <div class="progress-bar bg-white" style="width: 85%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts and Tables Row -->
+        <div class="row">
+            <div class="col-lg-8 wow animate__animated animate__fadeInLeft" data-wow-delay="0.2s">
+                <div class="chart-container">
+                    <h4><i class="fas fa-chart-line"></i> Sales Overview</h4>
+                    <hr>
+                    <!-- Chart Placeholder -->
+                    <div style="height: 300px; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa; border-radius: 5px;">
+                        <p class="text-muted">Sales Chart Will Appear Here</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 wow animate__animated animate__fadeInRight" data-wow-delay="0.2s">
+                <div class="chart-container">
+                    <h4><i class="fas fa-chart-pie"></i> Revenue Sources</h4>
+                    <hr>
+                    <!-- Pie Chart Placeholder -->
+                    <div style="height: 300px; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa; border-radius: 5px;">
+                        <p class="text-muted">Pie Chart Will Appear Here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="row">
+            <div class="col-12 wow animate__animated animate__fadeInUp" data-wow-delay="0.3s">
+                <div class="recent-orders">
+                    <h4><i class="fas fa-shopping-cart"></i> Recent Orders</h4>
+                    <hr>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#ORD-7841</td>
+                                    <td>John Doe</td>
+                                    <td>2023-06-15</td>
+                                    <td>$125.00</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>#ORD-7840</td>
+                                    <td>Jane Smith</td>
+                                    <td>2023-06-14</td>
+                                    <td>$89.99</td>
+                                    <td><span class="badge bg-warning text-dark">Processing</span></td>
+                                    <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>#ORD-7839</td>
+                                    <td>Robert Johnson</td>
+                                    <td>2023-06-14</td>
+                                    <td>$234.50</td>
+                                    <td><span class="badge bg-info">Shipped</span></td>
+                                    <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td>#ORD-7838</td>
+                                    <td>Emily Davis</td>
+                                    <td>2023-06-13</td>
+                                    <td>$65.75</td>
+                                    <td><span class="badge bg-danger">Cancelled</span></td>
+                                    <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-end mt-3">
+                        <a href="#" class="btn btn-primary">View All Orders</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="row">
+            <div class="col-md-6 wow animate__animated animate__fadeInUp" data-wow-delay="0.4s">
+                <div class="recent-orders">
+                    <h4><i class="fas fa-user-plus"></i> New Customers</h4>
+                    <hr>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Sarah Johnson</h5>
+                                <small>Today</small>
+                            </div>
+                            <p class="mb-1">sarah@example.com</p>
+                            <small>From: United States</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">David Wilson</h5>
+                                <small>Yesterday</small>
+                            </div>
+                            <p class="mb-1">david@example.com</p>
+                            <small>From: Canada</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 wow animate__animated animate__fadeInUp" data-wow-delay="0.4s">
+                <div class="recent-orders">
+                    <h4><i class="fas fa-box"></i> Low Stock Products</h4>
+                    <hr>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Wireless Headphones</h5>
+                                <span class="badge bg-danger">2 left</span>
+                            </div>
+                            <p class="mb-1">SKU: WH-2023</p>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Smart Watch</h5>
+                                <span class="badge bg-warning text-dark">5 left</span>
+                            </div>
+                            <p class="mb-1">SKU: SW-2023</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Wow.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+    
+    <script>
+        // Initialize wow.js
+        new WOW().init();
+        
+        // Toggle sidebar on mobile
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
